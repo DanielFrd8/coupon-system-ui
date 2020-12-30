@@ -5,6 +5,7 @@ import { Context } from './context/context'
 import Home from './components/Home/Home';
 import Admin from './components/Admin/Admin';
 import Error from './components/Error/Error';
+import Company from './components/Company/Company';
 
 function App() {
 
@@ -16,8 +17,8 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route exact path="/error" component={Error} />
           <Route path="/admin" component={Admin} />
-          {/* <Route path="/company" component={}/>
-          <Route path="/customer" component={}/> */}
+          <Route path="/company" component={Company}/>
+          {/* <Route path="/customer" component={}/> */}
         </Switch>
     </Router>
   );

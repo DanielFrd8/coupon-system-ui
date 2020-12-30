@@ -1,4 +1,5 @@
 import React from 'react'
+import {jwtStorage} from './storage'
 
 const responseObject = Object.freeze({
     data: null,
@@ -10,30 +11,33 @@ function fetchData(url) {
     return async method => {
         const response = await fetch(url, {
             method,
+            headers:{
+                'Authorization' : `Bearer ${jwtStorage.get()}`,
+                'Content-Type': 'application/json'
+            },
+  
         })
         return await response.json()
     }
 }
 
-
-function fetchWithBody(url, body) {
+function fetchWithBody(url, body, requireAuth) {
     return async method => {
+        console.log(JSON.stringify(body))
         const response = await fetch(url, {
             method,
-            headers: {
+            headers:requireAuth ? {
+                'Authorization' : `Bearer ${jwtStorage.get()}`,
                 'Content-Type': 'application/json'
-            },
+            }
+            :{},
             body: JSON.stringify(body)
         })
         return await response.json()
     }
 }
 
-
-
-
-
-// fisrt function 
+// first function 
 function useFetch(method) {
 
     // second function 
@@ -99,7 +103,6 @@ const usePost = useBodyFetch('POST')
 const usePut = useBodyFetch('PUT')
 
 export{
-    responseObject,
     fetchData,
     fetchWithBody,
     useGet,

@@ -1,33 +1,24 @@
+import { Button } from '@material-ui/core'
 import React from 'react'
-import classes from './NavBar.module.css'
+import { Link, Router, useHistory } from 'react-router-dom'
+import { jwtStorage, typeStorage, } from '../../api/storage'
 
-export default function NavBar({ items, }) {
-    const [className,setClassName] =React.useState(classes.topnav)
-    const [toggle,setToggle] =React.useState(classes.topnav)
+export default function NavBar({ items }) {
+
+    const history = useHistory()
 
     return (
-        <nav className={className}>
-            {items.map((value, key) =>
-                !value.dropdownMenu
-                    ? <a key={key} onClick={value.onClick}>{value.text}</a>
-                    : <div key={key} className={classes.dropdown}>
-                        <button className={classes.dropbtn}>
-                            {value.text}
-                        </button>
-                        <div className={classes.dropdownContent}>
-                            {value.dropdownMenu.map((v, k) =>
-                                <a key={k} onClick={v.onclick}>{v.text}</a>)
-                            }
-                        </div>
-                    </div>
-            )}
-            <a className={classes.icon}
-            onClick={() => {                
-                setToggle(prev => !prev)
-                setClassName(toggle ? classes.topnav + " " + classes.responsive : classes.topnav)
-            }}>
-                &#9776;
-            </a>
-        </nav >
+        <div style={{ backgroundColor: '#d9d9d9' }}>
+            <Router history={history} >
+                {items.map((value, key) =>
+                    <Link to={`/${typeStorage.get()}/${value}`} key={key}>
+                        <Button>{value}</Button>
+                    </Link>
+                )}
+                <Link to="/">
+                    <Button onClick={() => jwtStorage.remove()}>log out</Button>
+                </Link>
+            </Router>
+        </div >
     )
 }

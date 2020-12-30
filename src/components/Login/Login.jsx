@@ -1,10 +1,9 @@
 import React from 'react'
-import classes from './Login.module.css'
 import { typeStorage, jwtStorage, } from "../../api/storage";
 import { fetchWithBody } from '../../api/fetch';
 import { useHistory } from 'react-router-dom';
 
-export default function Login(props) {
+export default function Login() {
 
     const history = useHistory()
     const [email, setEmail] = React.useState('')
@@ -20,24 +19,21 @@ export default function Login(props) {
 
     return (
         <>
-            <div className={classes.container}>
-                <h1 className={classes.header}>Login</h1>
+            <div style={{display:'flex',flexDirection: 'column',width:'160px'}}>
+                <h1>Login</h1>
                 <input
-                    className={classes.email}
                     type="text"
                     placeholder="email"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                 />
                 <input
-                    className={classes.password}
                     type="password"
                     placeholder="password"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                 />
                 <select
-                    className={classes.type}
                     value={type}
                     onChange={e => {
                         setType(e.target.value)
@@ -48,16 +44,17 @@ export default function Login(props) {
                     <option value="admin">Admin</option>
                 </select>
                 <button
-                    className={classes.login}
                     disabled={!email && !password}
                     onClick={() => {
-                        fetchWithBody(`http://localhost:8080/${type}/authenticate`, { email, password })('POST')
+                        console.log({ email, password })
+                        fetchWithBody(`http://localhost:8080/${type}/authenticate`, { email, password },false)('POST')
                             .then(({ success, content, }) => {
                                 if (success) {
+                                    console.log({ success, content, })
                                     jwtStorage.set(content)
-
                                     history.push(`/${type}`)
                                 } else {
+                                    console.log({ success, content, })
                                     history.push('/error')
                                 }
                             })

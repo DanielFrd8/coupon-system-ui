@@ -14,12 +14,17 @@ function storageApi(key){
     function setObject(value){
         set(key,JSON.stringify(value))
     }
+
+    function remove(){
+        localStorage.removeItem(key)
+    }
     
     return {
         get,
         set,
         getObject,
         setObject,
+        remove
     }
 }
 
